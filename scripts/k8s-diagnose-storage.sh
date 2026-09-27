@@ -42,7 +42,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: vsan-default-storage-policy
+  storageClassName: hawkeye-storage-policy
   resources:
     requests:
       storage: 1Gi
@@ -66,7 +66,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: vsan-default-storage-policy-latebinding
+  storageClassName: hawkeye-storage-policy-latebinding
   resources:
     requests:
       storage: 1Gi

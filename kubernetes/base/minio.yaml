@@ -37,7 +37,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: minio
-          image: harbor-01a.vcf.lab/library/minio/minio:latest
+          image: harbor.lab.worker-node.com/library/minio/minio:latest
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -85,7 +85,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: vsan-default-storage-policy
+  storageClassName: hawkeye-storage-policy
   resources:
     requests:
       storage: 20Gi

@@ -18,7 +18,7 @@ set -e
 # ============================================================================
 # DEFAULT CONFIGURATION - These can be changed interactively at runtime
 # ============================================================================
-HARBOR_URL="harbor-01a.vcf.lab"
+HARBOR_URL="harbor.lab.worker-node.com"
 HARBOR_PROJECT="bookstore"
 K8S_NAMESPACE="bookstore"
 
@@ -173,11 +173,11 @@ configure_kustomize() {
     # Set all images using kustomize edit or sed fallback
     if command -v kustomize &> /dev/null; then
         kustomize edit set image \
-            "harbor-01a.vcf.lab/bookstore/app=${app_image}" \
-            "harbor-01a.vcf.lab/library/postgres=${POSTGRES_IMAGE}" \
-            "harbor-01a.vcf.lab/library/redis=${REDIS_IMAGE}" \
-            "harbor-01a.vcf.lab/library/elasticsearch=${ELASTICSEARCH_IMAGE}" \
-            "harbor-01a.vcf.lab/library/minio/minio=${MINIO_IMAGE}"
+            "harbor.lab.worker-node.com/bookstore/app=${app_image}" \
+            "harbor.lab.worker-node.com/library/postgres=${POSTGRES_IMAGE}" \
+            "harbor.lab.worker-node.com/library/redis=${REDIS_IMAGE}" \
+            "harbor.lab.worker-node.com/library/elasticsearch=${ELASTICSEARCH_IMAGE}" \
+            "harbor.lab.worker-node.com/library/minio/minio=${MINIO_IMAGE}"
     else
         echo "  ⚠️  kustomize not available, images will use defaults from manifests"
     fi
@@ -487,9 +487,9 @@ namespace: ${K8S_NAMESPACE}
 resources:
   - ../init-db-job.yaml
 images:
-  - name: harbor-01a.vcf.lab/bookstore/app
+  - name: harbor.lab.worker-node.com/bookstore/app
     newTag: ${VERSION}
-  - name: harbor-01a.vcf.lab/library/postgres
+  - name: harbor.lab.worker-node.com/library/postgres
     newTag: ${POSTGRES_TAG}
 EOF
 

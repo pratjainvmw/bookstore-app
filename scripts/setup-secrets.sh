@@ -62,7 +62,7 @@ kubectl create secret generic chatbot-secrets \
 echo "  [3/4] Creating harbor-registry-secret in reader namespace..."
 kubectl create secret docker-registry harbor-registry-secret \
   --namespace=reader \
-  --docker-server=harbor-01a.vcf.lab \
+  --docker-server=harbor.lab.worker-node.com \
   --docker-username=admin \
   --docker-password="$HARBOR_PASSWORD" \
   --dry-run=client -o yaml | kubectl apply -f -
@@ -71,7 +71,7 @@ kubectl create secret docker-registry harbor-registry-secret \
 echo "  [4/4] Creating harbor-registry-secret in chatbot namespace..."
 kubectl create secret docker-registry harbor-registry-secret \
   --namespace=chatbot \
-  --docker-server=harbor-01a.vcf.lab \
+  --docker-server=harbor.lab.worker-node.com \
   --docker-username=admin \
   --docker-password="$HARBOR_PASSWORD" \
   --dry-run=client -o yaml | kubectl apply -f -
@@ -140,7 +140,7 @@ spec:
   name: harbor-registry
   data:
   - key: docker-server
-    value: "harbor-01a.vcf.lab"
+    value: "harbor.lab.worker-node.com"
   - key: docker-username
     value: "admin"
   - key: docker-password

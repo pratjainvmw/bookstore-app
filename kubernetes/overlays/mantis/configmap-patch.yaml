@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  READER_BROWSER_URL: "https://reader-mantis.lab.worker-node.com"
+  CHATBOT_BROWSER_URL: "https://chatbot-mantis.lab.worker-node.com"
+  # LAB DEMO STEP: To ENABLE Elasticsearch, comment out ES_URL: "" below
+  # and uncomment the ES_URL line beneath it.
+  ES_URL: ""
+  # ES_URL: "http://elasticsearch-service:9200"
