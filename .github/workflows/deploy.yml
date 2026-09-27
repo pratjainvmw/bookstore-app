@@ -20,6 +20,8 @@ jobs:
   deploy:
     name: Manual Deploy to Harbor
     runs-on: [self-hosted, linux, harbor]
+    env:
+      OVERLAY: ${{ github.ref_name == 'main' && 'drax' || 'mantis' }}
     
     steps:
     - name: Checkout code
@@ -53,8 +55,8 @@ jobs:
 
     - name: Update kustomization.yaml
       run: |
-        cd kubernetes/base
-        sed -i '/harbor-01a.vcf.lab\/bookstore\/app/{n;s/newTag: .*/newTag: ${{ github.event.inputs.version }}/}' kustomization.yaml
+        cd kubernetes/overlays/${OVERLAY}
+        sed -i '/harbor.lab.worker-node.com\/bookstore\/app/{n;s/newTag: .*/newTag: ${{ github.event.inputs.version }}/}' kustomization.yaml
         echo "Updated kustomization.yaml:"
         cat kustomization.yaml
 
@@ -63,17 +65,17 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         
-        if git diff --quiet kubernetes/base/kustomization.yaml; then
+        if git diff --quiet kubernetes/overlays/${OVERLAY}/kustomization.yaml; then
           echo "No changes to kustomization.yaml"
           exit 0
         fi
         
-        git add kubernetes/base/kustomization.yaml
+        git add kubernetes/overlays/${OVERLAY}/kustomization.yaml
         git commit -m "chore: manual deploy ${{ github.event.inputs.version }} [skip ci]"
         
         git config --unset-all http.https://github.com/.extraheader || true
         git remote set-url origin "https://x-access-token:${{ secrets.GIT_PUSH_TOKEN }}@github.com/${{ github.repository }}.git"
-        git push origin HEAD:main
+        git push origin HEAD:${GITHUB_REF_NAME}
         
         echo "✅ Pushed kustomization.yaml update - ArgoCD will sync automatically"
 
@@ -85,7 +87,7 @@ jobs:
         echo "- \`${{ secrets.HARBOR_URL }}/bookstore/app:${{ github.event.inputs.version }}\`" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "**GitOps:**" >> $GITHUB_STEP_SUMMARY
-        echo "- Updated \`kubernetes/base/kustomization.yaml\`" >> $GITHUB_STEP_SUMMARY
+        echo "- Updated \`kubernetes/overlays/${OVERLAY}/kustomization.yaml\`" >> $GITHUB_STEP_SUMMARY
         echo "- ArgoCD will automatically sync the new image" >> $GITHUB_STEP_SUMMARY
 
     - name: Cleanup

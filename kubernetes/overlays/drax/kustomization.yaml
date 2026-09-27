@@ -9,19 +9,12 @@ resources:
 components:
   - ../../components/init-db
 
+# CI bumps the newTag line directly below the app image name (keep them adjacent)
 images:
   - name: harbor.lab.worker-node.com/bookstore/app
-    newName: harbor.lab.worker-node.com/bookstore/app
     newTag: latest
-  - name: harbor.lab.worker-node.com/library/postgres
-    newName: harbor.lab.worker-node.com/library/postgres
-  - name: harbor.lab.worker-node.com/library/redis
-    newName: harbor.lab.worker-node.com/library/redis
-  - name: harbor.lab.worker-node.com/library/elasticsearch
-    newName: harbor.lab.worker-node.com/library/elasticsearch
-  - name: harbor.lab.worker-node.com/library/minio/minio
-    newName: harbor.lab.worker-node.com/library/minio/minio
 
+# harbor-registry-secret is created by hand on the cluster (not stored in git)
 secretGenerator:
   - name: app-secrets
     literals:
@@ -29,10 +22,6 @@ secretGenerator:
       - DB_PASSWORD=bookstore-secret-pw
       - MINIO_ACCESS_KEY=minioadmin
       - MINIO_SECRET_KEY=minioadmin-secret
-  - name: harbor-registry-secret
-    type: kubernetes.io/dockerconfigjson
-    literals:
-      - .dockerconfigjson={"auths":{"harbor.lab.worker-node.com":{"username":"admin","password":"Harbor123!","auth":"YWRtaW46SGFyYm9yMTIzIQ=="}}}
 
 patches:
   - path: configmap-patch.yaml
@@ -43,8 +32,8 @@ patches:
   - path: redis-pvc-patch.yaml
   - path: minio-pvc-patch.yaml
   - path: init-db-job-patch.yaml
-  # LAB DEMO STEP: To ENABLE Elasticsearch, comment out the two patches below,
-  # AND uncomment the '- path: elasticsearch-patch.yaml' line below them.
+  # Elasticsearch disabled (same as upstream lab). To enable: remove the two
+  # delete patches below, uncomment elasticsearch-patch.yaml, and set ES_URL in configmap-patch.yaml.
   - patch: |-
       $patch: delete
       apiVersion: apps/v1
@@ -57,5 +46,4 @@ patches:
       kind: Service
       metadata:
         name: elasticsearch-service
-        
   # - path: elasticsearch-patch.yaml

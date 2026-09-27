@@ -24,15 +24,15 @@ resources:
 # Image overrides - CI/CD updates the app tag only
 # Tag format: vYYYYMMDD-shortsha (e.g., v20260116-bfb6ee9)
 images:
-  - name: harbor-01a.vcf.lab/bookstore/app
+  - name: harbor.lab.worker-node.com/bookstore/app
     newTag: v20260827-1d589d2
-  - name: harbor-01a.vcf.lab/library/postgres
+  - name: harbor.lab.worker-node.com/library/postgres
     newTag: 14-alpine
-  - name: harbor-01a.vcf.lab/library/redis
+  - name: harbor.lab.worker-node.com/library/redis
     newTag: 7-alpine
-  - name: harbor-01a.vcf.lab/library/elasticsearch
+  - name: harbor.lab.worker-node.com/library/elasticsearch
     newTag: 8.11.0
-  - name: harbor-01a.vcf.lab/library/minio/minio
+  - name: harbor.lab.worker-node.com/library/minio/minio
     newTag: latest
 
 configMapGenerator:
