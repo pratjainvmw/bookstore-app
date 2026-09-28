@@ -32,6 +32,7 @@ patches:
   - path: redis-pvc-patch.yaml
   - path: minio-pvc-patch.yaml
   - path: init-db-job-patch.yaml
+  - path: recreate-strategy-patch.yaml
   # Elasticsearch disabled (same as upstream lab). To enable: remove the two
   # delete patches below, uncomment elasticsearch-patch.yaml, and set ES_URL in configmap-patch.yaml.
   - patch: |-
