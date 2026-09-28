@@ -12,7 +12,7 @@ components:
 # CI bumps the newTag line directly below the app image name (keep them adjacent)
 images:
   - name: harbor.lab.worker-node.com/bookstore/app
-    newTag: v20260928-fe416b8
+    newTag: v20260928-d8cf94f
 
 # harbor-registry-secret is created by hand on the cluster (not stored in git)
 secretGenerator:
